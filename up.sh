@@ -3,9 +3,10 @@
 # Your Bot Token & Target Channel
 BOT_TOKEN="8721916407:AAGxW72Li0r0WK36IzUM8bOCosh35F9_AE0"
 CHAT_ID="-1003480158558"
+PIXELDRAIN_KEY="5e3542a1-e24f-4eb0-bcc2-9aced837931c"
 
 # Host Choice: "pixeldrain", "gofile", or "both"
-PREFERRED_HOST="pixeldrain"
+PREFERRED_HOST="both"
 
 # Device Configuration
 DEVICE_NAME="Redmi Turbo 3 / POCO F6"
@@ -39,9 +40,18 @@ ROM_VERSION="${ROM_VERSION:-official}"
 # Upload Functions
 upload_pixeldrain() {
     echo "🚀 Uploading to PixelDrain..." >&2
-    RES=$(curl -s -F "file=@$ZIP_PATH" "https://pixeldrain.com/api/file")
+    if [ -n "$PIXELDRAIN_KEY" ]; then
+        # Authenticated Upload
+        RES=$(curl -s -u ":$PIXELDRAIN_KEY" -F "file=@$ZIP_PATH" "https://pixeldrain.com/api/file")
+    else
+        # Anonymous Fallback
+        RES=$(curl -s -F "file=@$ZIP_PATH" "https://pixeldrain.com/api/file")
+    fi
+    
     ID=$(echo "$RES" | jq -r '.id 2>/dev/null')
-    [ -n "$ID" ] && [ "$ID" != "null" ] && echo "https://pixeldrain.com/u/$ID"
+    if [ -n "$ID" ] && [ "$ID" != "null" ]; then
+        echo "https://pixeldrain.com/u/$ID"
+    fi
 }
 
 upload_gofile() {
