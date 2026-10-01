@@ -13,10 +13,8 @@ DEVICE_CODENAME="peridot"
 MAINTAINER="BLU/Ryznstk"
 
 # Target Links
-CHANGELOG_URL="https://your-changelog-link.com"
 DONATE_URL="https://sociabuzz.com/blu_stk/donate"
 CHANNEL_URL="https://t.me/blu_stk"
-BANNER_PATH="banner.jpg"
 
 # Auto-detect built ZIP file from 'out/target/product/peridot/'
 ZIP_PATH=$(ls -t out/target/product/${DEVICE_CODENAME}/*.zip 2>/dev/null | head -n 1)
