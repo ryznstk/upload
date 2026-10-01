@@ -48,7 +48,9 @@ upload_pixeldrain() {
         RES=$(curl -s -F "file=@$ZIP_PATH" "https://pixeldrain.com/api/file")
     fi
     
-    ID=$(echo "$RES" | jq -r '.id 2>/dev/null')
+    # Corrected redirection outside the jq string argument
+    ID=$(echo "$RES" | jq -r '.id' 2>/dev/null)
+    
     if [ -n "$ID" ] && [ "$ID" != "null" ]; then
         echo "https://pixeldrain.com/u/$ID"
     fi
